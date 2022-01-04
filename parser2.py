@@ -138,7 +138,7 @@ def f(k):
     return time   
 
 
-def parse(filename):
+def parse(d):
     a=d[0:-1]
     r = re.search("(?i)Time Log", a)
     start = r.start()        
