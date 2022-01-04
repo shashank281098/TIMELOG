@@ -41,8 +41,7 @@ def y(d):
 
 def q(d):
     log_d = []
-    d_d =  list(d.split("\n"))
-    for variable in d_d:
+    for variable in d:
         l = re.findall(r'([01][0-9]|[0-9]):([0-5][0-9]|[0-9])([apAP][mM])',variable)
         log_d.append(l)
     return log_d    
@@ -143,15 +142,9 @@ def f(k):
 
 def parse(filename):
     d = open(filename, "r")
-    a=d[0:-1]
-    r = re.search("(?i)Time Log", a)
-    start = r.start()        
-    if r:
-        changed = q(d[start:])
-        y = y(changed)
-        j(y)
-    else:
-         st.write(" No Time Log mentioned")
+    changed = q(d)
+    y = y(changed)
+    j(y)
 
 if __name__ == "__main__":
 
