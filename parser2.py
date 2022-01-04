@@ -143,10 +143,11 @@ def parse(filename):
     r = re.search("(?i)Time Log", a)
     start = r.start()        
     if r:
-    changed = q(d[start:])
-    y = y(changed)
-    j(y)
-
+        changed = q(d[start:])
+        y = y(changed)
+        j(y)
+    else:
+         st.write(" No Time Log mentioned")
 
 if __name__ == "__main__":
 
