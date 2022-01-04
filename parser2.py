@@ -144,6 +144,7 @@ def f(k):
 def parse(d):
     a=d[0:-1]
     r = re.search("(?i)Time Log", a)
+    st.write(r)
     start = r.start()        
     if r:
         changed = q(d[start:])
