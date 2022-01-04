@@ -142,7 +142,7 @@ def f(k):
 
 
 def parse(filename):
-    d = open(filename, 'r')
+    d = open(filename, "r")
     a=d[0:-1]
     r = re.search("(?i)Time Log", a)
     start = r.start()        
