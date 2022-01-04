@@ -141,11 +141,10 @@ def f(k):
     return time   
 
 
-def parse(d):
+def parse(filename):
+    d = open(filename, 'r')
     a=d[0:-1]
     r = re.search("(?i)Time Log", a)
-    st.write(r)
-    return
     start = r.start()        
     if r:
         changed = q(d[start:])
