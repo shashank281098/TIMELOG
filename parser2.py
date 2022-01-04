@@ -143,8 +143,8 @@ def f(k):
 def parse(filename):
     d = open(filename, "r")
     changed = q(d)
-    y = y(changed)
-    j(y)
+    xy = y(changed)
+    j(xy)
 
 if __name__ == "__main__":
 
