@@ -4,75 +4,150 @@ import datetime
 import time
 
 
-def file_in(inputFilename):
-    dataOut = []
-    fileValues = open(inputFilename, "r")
-    dataOut.extend(fileValues.readlines())
-    fileValues.close()
-    return dataOut
+def y(d):
+    w = []
+    for variable in d:
+        time = 0
+        if len(variable)!= 0:
+            k=list(variable)
+            if variable[0][2] == 'am' or variable[0][2] == 'aM' or variable[0][2] == 'Am' or variable[0][2] == 'AM' :
+                if variable[1][2] == 'am' or variable[1][2] == 'aM' or variable[1][2] == 'Am' or variable[1][2] == 'AM' :
+                    time = z(k)
+
+            if variable[0][2] == 'am' or variable[0][2] == 'aM' or variable[0][2] == 'Am' or variable[0][2] == 'AM' :
+                if variable[1][2] == 'pm' or variable[1][2] == 'pM' or variable[1][2] == 'Pm' or variable[1][2] == 'PM' :
+                    time = f(k)
+                   
+            if variable[0][2] == 'pm' or variable[0][2] == 'pM' or variable[0][2] == 'Pm' or variable[0][2] == 'PM' :
+                if variable[1][2] == 'pm' or variable[1][2] == 'pM' or variable[1][2] == 'Pm' or variable[1][2] == 'PM' :
+                    time = z(k)            
+                                          
+            if variable[0][2] == 'pm' or variable[0][2] == 'pM' or variable[0][2] == 'Pm' or variable[0][2] == 'PM' :
+                if variable[1][2] == 'am' or variable[1][2] == 'aM' or variable[1][2] == 'Am' or variable[1][2] == 'AM' :
+                    time = i(k)          
+           
+           
+            w.append(time)
+    x = 0
+    for variable in w:
+        x = x + variable
+    return x
+
+       
 
 
-def format(timeData):
-    try:
-        time.strptime(timeData, '%I:%M%p')
-        return "Y"
-    except ValueError:
-        return "N"
+def q(d):
+    log_d = []
+    d_d =  list(d.split("\n"))
+    for variable in d_d:
+        l = re.findall(r'([01][0-9]|[0-9]):([0-5][0-9]|[0-9])([apAP][mM])',variable)
+        log_d.append(l)
+    return log_d    
 
 
-def total_time(time_data):
-    logTime = datetime.timedelta()
-    for i in time_data:
-        v1 = datetime.datetime.strptime(i[1], "%I:%M%p")
-        v2 = datetime.datetime.strptime(i[0], "%I:%M%p")
-        v1_v2 = (v1 - v2)
-        if str(v1_v2).count('day') != 0:
-            countInitial = "00:00:00"
-            dayCount = (str(v1_v2).split(",")[1].strip())
-            v4 = datetime.datetime.strptime(countInitial, "%H:%M:%S")
-            v3 = datetime.datetime.strptime(dayCount, "%H:%M:%S")
-            v3_v4 = (v3 - v4)
-            logTime += v3_v4
-        else:
-            logTime += v1_v2
-    sec = logTime.total_seconds()
-    mins, sec = divmod(sec, 60)
-    hour, mins = divmod(mins, 60)
-    return "Total Time Taken is : {} hours {} minutes {} seconds".format(hour, mins, sec)
-
-
-def get_time_log(fileValues):
-    timeTotalValue = []
-    lineCheck = ''
-    for line, linedata in enumerate(fileValues):
-        if linedata.strip('\n').count("Time Log:"):
-            lineCheck = line
-            break
-        else:
-            lineCheck = 'TimeLog'
-    if lineCheck != "TimeLog":
-        for pointer in range(int(lineCheck) + 1, len(fileValues)):
-            entry = (fileValues[pointer].split(' - ')[0].split())
-            end = (fileValues[pointer].split(' - ')[1:])
-            counter = (fileValues[pointer].split(' - ')[1:])
-            if len(entry) != 0:
-                timeCheckValue = format(entry[-1].strip())
-                if len(counter) != 0:
-                    timeformatstatus_v1 = format(end[0].split()[0])
-                    if timeformatstatus_v1 == "Y" and timeCheckValue == "Y":
-                        timeTotalValue.append((entry[-1], str(end[0].split()[0])))
-                else:
-                    print("No time value in line number : ", pointer + 1)
-            else:
-                print("No time value in line number : ", pointer + 1)
-        return total_time(timeTotalValue)
+   
+       
+def z(k):
+    hour1 = int(k[1][0])
+    hour0 = int(k[0][0])
+    min1 = int(k[1][1])
+    min0 = int(k[0][1])
+    time=0
+           
+    if(hour0 == 12):
+        if(hour1 != 12):
+            hour1 = hour1 + 12
+    if(hour0 < hour1):
+        time = time + (hour1 - hour0)*60
     else:
-        return "There is no Time Log in the file"
+        if(hour0 == hour1):
+            time = 0
+        else:
+            time = time + (hour0 - hour1)*60
+
+    if(min1 > min0):
+        time = time + (min1 - min0)
+    else:
+        time = time - (min0 - min1)
+            
+    return time
+
+   
+def i(k):
+    min0 = int(k[0][1])
+    hour1 = int(k[1][0])
+    min1 = int(k[1][1])
+    hour0 = int(k[0][0])
+    time=0
+    if(min1 > min0):
+        time = time + (min1 - min0)
+    else:
+        time = time - (min0 - min1)
+           
+    if(hour0 == 12):
+        hour1 = hour1 - 12
+    if(hour1 != 12):
+            hour1 = hour1 + 12
+    if(hour0 < hour1):
+        time = time + (hour1 - hour0)*60
+    else:
+        if(hour0 == hour1):
+            time = 0
+        else:
+            time = time + (hour0 - hour1)*60
+                           
+    return time
+
+
+ 
+def j(time):
+    rh = time/60
+    fh = math.floor(rh)
+    cm = math.ceil((rh - fh)*60)
+    rd = math.floor(rh/24)
+    h = math.floor((((time/60)/24)-rd)*24)
+    mins = math.ceil((((((time/60)/24)-rd)*24)-h)*60)
+    if(h == 0):
+        st.write(f"{fh}hours {cm}minutes -- {time} minutes -- {rd}days {mins}minutes -- {rh}hours")
+    else:
+        st.write(f"{fh}hours {cm}minutes -- {time} minutes -- {rd}days {h}hours {mins}minutes -- {rh}hours")
+   
+
+
+def f(k):
+    min0 = int(k[0][1])
+    hour0 = int(k[0][0])
+    hour1 = int(k[1][0])
+    min1 = int(k[1][1])
+    time=0
+    if(min1 > min0):
+        time = time + (min1 - min0)
+    else:
+        time = time - (min0 - min1)
+    if(hour0 == 12):
+        hour1 = hour1 - 12
+    if(hour1 != 12):
+        hour1 = hour1 + 12
+    if(hour0 < hour1):
+        time = time + (hour1 - hour0)*60
+    else:
+        if(hour0 == hour1):
+            time = 0
+        else:
+            time = time + (hour0 - hour1)*60
+                           
+           
+    return time   
 
 
 def parse(filename):
-    file_data = file_in(inputFilename=filename)
-    return get_time_log(fileValues=file_data)
+    a=d[0:-1]
+    r = re.search("(?i)Time Log", a)
+    start = r.start()        
+    if r:
+    changed = q(d[start:])
+    y = y(changed)
+    j(y)
 
 
 if __name__ == "__main__":
@@ -115,8 +190,7 @@ if __name__ == "__main__":
         if not option:
             st.write("Not Found")
         else:
-            total_log = parse(option)
-            st.write(total_log)
+            parse(option)
 
     if reset:
         option = ""
