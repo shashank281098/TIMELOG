@@ -135,8 +135,6 @@ def f(k):
             time = 0
         else:
             time = time + (hour0 - hour1)*60
-                           
-           
     return time   
 
 
